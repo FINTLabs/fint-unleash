@@ -9,7 +9,7 @@ pipeline {
             }
         }
         stage('Publish') {
-            when { branch 'master' }
+            when { branch 'main' }
             steps {
                 withDockerRegistry([credentialsId: 'fintlabsacr.azurecr.io', url: 'https://fintlabsacr.azurecr.io']) {
                     sh "docker tag ${GIT_COMMIT} fintlabsacr.azurecr.io/unleash:build.${BUILD_NUMBER}"
