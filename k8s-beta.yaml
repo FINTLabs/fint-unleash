@@ -53,12 +53,6 @@ spec:
           image: fintlabsacr.azurecr.io/fint-unleash:dummy
           ports:
             - containerPort: 4242
- #         readinessProbe:
- #           initialDelaySeconds: 30
- #           timeoutSeconds: 5
- #           httpGet:
- #             port: 4242
- #             path: /client/features
           resources:
             limits:
               memory: "256Mi"
@@ -69,28 +63,6 @@ spec:
           env:
             - name: TZ
               value: Europe/Oslo
-            - name: DATABASE_URL
-              valueFrom:
-                secretKeyRef:
-                  key: DATABASE_URL
-                  name: unleash
-            - name: DATABASE_SSL
-              valueFrom:
-                secretKeyRef:
-                  key: DATABASE_SSL
-                  name: unleash
-            - name: GOOGLE_CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  key: GOOGLE_CLIENT_ID
-                  name: unleash
-            - name: GOOGLE_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  key: GOOGLE_CLIENT_SECRET
-                  name: unleash
-            - name: GOOGLE_CALLBACK_URL
-              valueFrom:
-                secretKeyRef:
-                  key: GOOGLE_CALLBACK_URL
-                  name: unleash
+          envFrom:
+            - secretRef:
+                name: unleash
