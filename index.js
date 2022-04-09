@@ -4,14 +4,13 @@ const unleash = require('unleash-server');
 const passport = require('@passport-next/passport');
 const GoogleOAuth2Strategy = require('@passport-next/passport-google-oauth2');
 
-const googleClientId = process.env.GOOGLE_CLIENT_ID;
-const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+const googleClientId = process.env.GOOGLE_CLIENT_ID || 'clientId';
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || 'clientSecret';
 const googleCallbackUrl = process.env.GOOGLE_CALLBACK_URL || 'http://localhost:4242/api/auth/callback';
 
 passport.use(
     'google',
-    new GoogleOAuth2Strategy(
-        {
+    new GoogleOAuth2Strategy({
             clientID: googleClientId,
             clientSecret: googleClientSecret,
             callbackURL: googleCallbackUrl,
@@ -36,7 +35,9 @@ function googleAdminAuth(app) {
 
     app.get(
         '/api/admin/login',
-        passport.authenticate('google', {scope: ['email']}),
+        passport.authenticate('google', {
+            scope: ['email']
+        }),
     );
     app.get(
         '/api/auth/callback',
