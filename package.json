@@ -16,6 +16,8 @@
   "dependencies": {
     "@passport-next/passport": "3.1.0",
     "@passport-next/passport-google-oauth2": "1.0.0",
+    "passport": "^0.5.2",
+    "passport-azure-ad": "^4.3.1",
     "unleash-server": "4.9.1"
   }
 }
