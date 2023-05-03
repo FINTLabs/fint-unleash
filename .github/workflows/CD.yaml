@@ -63,14 +63,14 @@ jobs:
          cluster-name: ${{ env.ALPHA_CLUSTER_NAME }}
          resource-group: ${{ env.ALPHA_CLUSTER_RESOURCE_GROUP }}
 
-      # - name: Deploy to Alpha
-      #   uses: azure/k8s-deploy@v4.4
-      #   with:
-      #    manifests: ${{ steps.bake-alpha.outputs.manifestsBundle }}
-      #    images: |
-      #      ${{ steps.meta.outputs.tags }}
-      #    namespace: operators
-      #    action: deploy
+      - name: Deploy to Alpha
+        uses: azure/k8s-deploy@v4.4
+        with:
+         manifests: ${{ steps.bake-alpha.outputs.manifestsBundle }}
+         images: |
+           ${{ steps.meta.outputs.tags }}
+         namespace: operators
+         action: deploy
 
       # ## Beta cluster ##
       # - name: Bake beta manifests with Kustomize
