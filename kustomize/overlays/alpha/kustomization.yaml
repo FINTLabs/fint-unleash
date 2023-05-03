@@ -13,7 +13,7 @@ patches:
   - patch: |-
       - op: replace
         path: "/spec/url/hostname"
-        value: "unleash-alpha.flais.io"
+        value: "unleash-alpha.fintlabs.no"
     target:
       kind: Application
       name: fint-unleash
