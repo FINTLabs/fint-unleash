@@ -16,7 +16,7 @@ spec:
     enabled: true
   url:
     hostname: "dummy.local"
-    path: "/"
+    basePath: "/"
   ingress:
     enabled: true
   resources:
