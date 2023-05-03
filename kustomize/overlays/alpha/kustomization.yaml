@@ -10,3 +10,10 @@ patches:
     target:
       kind: Application
       name: fint-unleash
+  - patch: |-
+      - op: replace
+        path: "/spec/url/hostname"
+        value: "unleash-alpha.fintlabs.no"
+    target:
+      kind: Application
+      name: fint-unleash

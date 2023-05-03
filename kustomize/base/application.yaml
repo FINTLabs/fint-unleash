@@ -14,6 +14,11 @@ spec:
     itemPath: "dummy"
   database:
     enabled: true
+  url:
+    hostname: "dummy.local"
+    path: "/"
+  ingress:
+    enabled: true
   resources:
     limits:
       memory: "256Mi"
