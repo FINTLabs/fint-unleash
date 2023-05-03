@@ -1,0 +1,23 @@
+apiVersion: fintlabs.no/v1alpha1
+kind: Application
+metadata:
+  name: fint-unleash
+spec:
+  port: 4242
+  orgId: fintlabs.no
+  image: ghcr.io/fintlabs/fint-unleash:sha-0000000
+  prometheus:
+    enabled: true
+    port: "4242"
+    path: /internal-backstage/prometheus
+  onePassword:
+    itemPath: "dummy"
+  database:
+    enabled: true
+  resources:
+    limits:
+      memory: "256Mi"
+      cpu: "500m"
+    requests:
+      cpu: "100m"
+      memory: "32Mi"
