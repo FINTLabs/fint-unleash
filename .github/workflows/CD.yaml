@@ -6,6 +6,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
+  NAMESPACE: flais-io
   IMAGE_NAME: ${{ github.repository }}
   ALPHA_CLUSTER_NAME: aks-alpha-fint-2021-11-18
   ALPHA_CLUSTER_RESOURCE_GROUP: rg-aks-alpha
@@ -69,7 +70,7 @@ jobs:
          manifests: ${{ steps.bake-alpha.outputs.manifestsBundle }}
          images: |
            ${{ steps.meta.outputs.tags }}
-         namespace: operators
+         namespace: ${{ env.NAMESPACE }}
          action: deploy
 
       # ## Beta cluster ##
