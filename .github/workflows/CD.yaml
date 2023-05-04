@@ -93,7 +93,7 @@ jobs:
           manifests: ${{ steps.bake-beta.outputs.manifestsBundle }}
           images: |
             ${{ steps.meta.outputs.tags }}
-          namespace: operators
+          namespace: ${{ env.NAMESPACE }}
           action: deploy
 
       ## Api cluster ##
@@ -116,5 +116,5 @@ jobs:
           manifests: ${{ steps.bake-API.outputs.manifestsBundle }}
           images: |
             ${{ steps.meta.outputs.tags }}
-          namespace: operators
+          namespace: ${{ env.NAMESPACE }}
           action: deploy

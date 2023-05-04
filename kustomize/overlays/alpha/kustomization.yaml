@@ -9,7 +9,7 @@ patches:
         value: "vaults/aks-alpha-vault/items/unleash"
     target:
       kind: Application
-      name: fint-unleash
+      name: fint-unleash  
   - patch: |-
       - op: replace
         path: "/spec/url/hostname"
