@@ -10,7 +10,10 @@ async function ensureSchema(url) {
 
     console.log(url)
     const pgClient = new Client({
-        connectionString: url
+        connectionString: url,
+        ssl: {
+            rejectUnauthorized: false
+        }
     });
 
     await pgClient.connect();
