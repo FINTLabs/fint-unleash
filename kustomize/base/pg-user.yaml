@@ -1,0 +1,6 @@
+apiVersion: "fintlabs.no/v1alpha1"
+kind: PGUser
+metadata:
+  name: fint-unleash
+spec:
+  database: flais

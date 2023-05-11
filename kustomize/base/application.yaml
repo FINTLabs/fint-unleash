@@ -13,7 +13,7 @@ spec:
   onePassword:
     itemPath: "dummy"
   database:
-    enabled: true
+    enabled: false
   url:
     hostname: "dummy.local"
     basePath: "/"
