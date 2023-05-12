@@ -10,7 +10,6 @@ const username = process.env['fint.database.username'];
 const password = process.env['fint.database.password'];
 const dbUri = databaseUrl(username, password, url.hostname, url.port, url.search)
 
-ensureSchema(dbUri);
 
 const options = {
   authentication: {
@@ -19,7 +18,7 @@ const options = {
   },
   databaseUrl: dbUri,
   db: {
-    schema: "unleash",
+    schema: username,
   }
 };
 
