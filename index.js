@@ -1,6 +1,5 @@
 'use strict';
 
-const { ensureSchema } = require("./schema");
 const {databaseUrl} = require("./db-url");
 const unleash = require('unleash-server');
 const azureAdminOauth = require("./azure-auth-hook");
