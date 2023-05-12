@@ -2175,20 +2175,10 @@ pg-pool@^3.5.1:
   resolved "https://registry.npmjs.org/pg-pool/-/pg-pool-3.5.1.tgz"
   integrity sha512-6iCR0wVrro6OOHFsyavV+i6KYL4lVNyYAB9RD18w66xSzN+d8b66HiwuP30Gp1SH5O9T82fckkzsRjlrhD0ioQ==
 
-pg-pool@^3.6.0:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/pg-pool/-/pg-pool-3.6.0.tgz#3190df3e4747a0d23e5e9e8045bcd99bda0a712e"
-  integrity sha512-clFRf2ksqd+F497kWFyM21tMjeikn60oGDmqMT8UBrynEwVEX/5R5xd2sdvdo1cZCFlguORNpVuqxIj+aK4cfQ==
-
 pg-protocol@^1.5.0:
   version "1.5.0"
   resolved "https://registry.npmjs.org/pg-protocol/-/pg-protocol-1.5.0.tgz"
   integrity sha512-muRttij7H8TqRNu/DxrAJQITO4Ac7RmX3Klyr/9mJEOBeIpgnF8f9jAfRz5d3XwQZl5qBjF9gLsUtMPJE0vezQ==
-
-pg-protocol@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/pg-protocol/-/pg-protocol-1.6.0.tgz#4c91613c0315349363af2084608db843502f8833"
-  integrity sha512-M+PDm637OY5WM307051+bsDia5Xej6d9IR4GwJse1qA1DIhiKlksvrneZOYQq42OM+spubpcNYEo2FcKQrDk+Q==
 
 pg-types@^2.1.0:
   version "2.2.0"
@@ -2211,19 +2201,6 @@ pg@^8.0.3, pg@^8.7.3:
     pg-connection-string "^2.5.0"
     pg-pool "^3.5.1"
     pg-protocol "^1.5.0"
-    pg-types "^2.1.0"
-    pgpass "1.x"
-
-pg@^8.10.0:
-  version "8.10.0"
-  resolved "https://registry.yarnpkg.com/pg/-/pg-8.10.0.tgz#5b8379c9b4a36451d110fc8cd98fc325fe62ad24"
-  integrity sha512-ke7o7qSTMb47iwzOSaZMfeR7xToFdkE71ifIipOAAaLIM0DYzfOAXlgFFmYUIE2BcJtvnVlGCID84ZzCegE8CQ==
-  dependencies:
-    buffer-writer "2.0.0"
-    packet-reader "1.0.0"
-    pg-connection-string "^2.5.0"
-    pg-pool "^3.6.0"
-    pg-protocol "^1.6.0"
     pg-types "^2.1.0"
     pgpass "1.x"
 
@@ -2919,10 +2896,10 @@ unleash-client@3.18.1:
     murmurhash3js "^3.0.1"
     semver "^7.3.8"
 
-unleash-server@5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/unleash-server/-/unleash-server-5.0.1.tgz#c7c96dd7461950dc275941c39eadabb7ca8b0678"
-  integrity sha512-TpxxqwsNAylLqZGBKk0gYsx9Ci4H51y1ePfi6LZsF70UpvhUpt2j90Ot+d2nPwOTGKijAssnhc78mK5VgLoSnw==
+unleash-server@5.0.6:
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/unleash-server/-/unleash-server-5.0.6.tgz#310d65ac5b18d8cd1f041b697d9c2272217b36d2"
+  integrity sha512-b24z6ojN3K5LAtNs8y4CIidpUOVjwNW5t0B8/ke+aWlrGu7SXmIlP8AdJ6FelvbFDjfV55yGYyIZkommVfhMpA==
   dependencies:
     "@unleash/express-openapi" "^0.2.2"
     ajv "^8.11.0"
