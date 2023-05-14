@@ -14,9 +14,6 @@ spec:
     itemPath: "dummy"
   database:
     database: flais
-  envFrom:
-    - secretRef:
-        name: fint-unleash
   url:
     hostname: "dummy.local"
     basePath: "/"
