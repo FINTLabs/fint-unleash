@@ -13,7 +13,7 @@ spec:
   onePassword:
     itemPath: "dummy"
   database:
-    enabled: false
+    database: flais
   envFrom:
     - secretRef:
         name: fint-unleash
