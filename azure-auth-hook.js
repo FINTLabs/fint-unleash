@@ -79,7 +79,7 @@ function azureAdminOauth(app, config, services) {
       next();
     } else {
       return res
-        .status('401')
+        .status(401)
         .json(
           new unleash.AuthenticationRequired({
             path: '/auth/azure/login',
