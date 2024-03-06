@@ -1,8 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable import/no-unresolved */
-
-'use strict';
-
 /**
  * Azure AD hook for securing an Unleash server
  *
@@ -18,51 +13,64 @@
  *  - AUTH_TENANT_ID
  */
 
-const unleash = require('unleash-server');
-const passport = require('@passport-next/passport');
-const OIDCStrategy = require('passport-azure-ad').OIDCStrategy;
+import {
+  User,
+  AuthenticationRequired,
+  IUnleashServices,
+  IUnleashConfig,
+} from 'unleash-server';
+import passport from '@passport-next/passport';
+import { IProfile, OIDCStrategy, VerifyCallback } from 'passport-azure-ad';
+import { Application } from 'express';
 
 const host = process.env.AUTH_HOST;
 const clientID = process.env.AUTH_CLIENT_ID;
 const clientSecret = process.env.AUTH_CLIENT_SECRET;
 const tenantID = process.env.AUTH_TENANT_ID;
 
-function azureAdminOauth(app, config, services) {
-  const { baseUriPath } = config.server;
+export default function azureAdminOauth(
+  app: Application,
+  config: IUnleashConfig,
+  services: IUnleashServices,
+) {
   const { userService } = services;
 
   passport.use(
     'azure',
-    // Check passport azure ad documentation for option details: https://github.com/AzureAD/microsoft-authentication-library-for-js/tree/dev/maintenance/passport-azure-ad#4112-options
     new OIDCStrategy(
       {
         identityMetadata: `https://login.microsoftonline.com/${tenantID}/v2.0/.well-known/openid-configuration`,
-        clientID,
+        clientID: clientID as string,
         clientSecret,
         redirectUrl: `${host}/api/auth/callback`,
         responseType: 'code',
         responseMode: 'query',
         scope: ['openid', 'email'],
         allowHttpForRedirectUrl: true,
+        passReqToCallback: false, // Add this line
       },
-      async (iss, sub, profile, accessToken, refreshToken, cb) => {
+      async (profile: IProfile, done: VerifyCallback) => {
         const user = await userService.loginUserWithoutPassword(
           profile._json.email,
-          true
+          true,
         );
-        cb(null, user);
-      }
-    )
+        done(null, user);
+      },
+    ),
   );
 
   app.use(passport.initialize());
   app.use(passport.session());
-  passport.serializeUser((user, done) => done(null, user));
-  passport.deserializeUser((user, done) => done(null, user));
+  passport.serializeUser((user: User, done: VerifyCallback) =>
+    done(null, user),
+  );
+  passport.deserializeUser((user: User, done: VerifyCallback) =>
+    done(null, user),
+  );
 
   app.get(
     '/auth/azure/login',
-    passport.authenticate('azure', { scope: ['email'] })
+    passport.authenticate('azure', { scope: ['email'] }),
   );
   app.get(
     '/api/auth/callback',
@@ -71,7 +79,7 @@ function azureAdminOauth(app, config, services) {
     }),
     (req, res) => {
       res.redirect('/');
-    }
+    },
   );
 
   app.use('/api/admin/', (req, res, next) => {
@@ -81,15 +89,13 @@ function azureAdminOauth(app, config, services) {
       return res
         .status(401)
         .json(
-          new unleash.AuthenticationRequired({
+          new AuthenticationRequired({
             path: '/auth/azure/login',
             type: 'custom',
             message: `You have to identify yourself in order to use Unleash. Click the button and follow the instructions.`,
-          })
+          }),
         )
         .end();
     }
   });
 }
-
-module.exports = azureAdminOauth;

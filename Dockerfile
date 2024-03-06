@@ -1,11 +1,24 @@
-FROM node:16-alpine
+# Stage 1: Build TypeScript code
+FROM node:latest AS build
 
-COPY package.json package-lock.json ./
+WORKDIR /app
 
-RUN npm install && npm ci
+COPY package.json yarn.lock .yarnrc.yml ./
+RUN yarn install
 
 COPY . .
+RUN yarn build
+
+# Stage 2: Run the built code
+FROM node:latest
+
+WORKDIR /app
+
+COPY package.json yarn.lock ./
+RUN yarn install --production
+
+COPY --from=build /app/dist ./dist
 
 EXPOSE 4242
 
-CMD node index.js
+CMD node dist/index.js
