@@ -12,8 +12,9 @@
     "start": "node index.js",
     "dev": "NODE_ENV=development tsx watch --env-file=.env.development src",
     "build": "npm-run-all -s clean lint && tsc",
-    "format": "npx prettier --write src",
-    "lint": "npx eslint src --ext .ts"
+    "test": "jest --coverage --no-cache --silent src/*.test.ts",
+    "lint": "eslint ./src --ext .js,.ts",
+    "lint:fix": "eslint ./src --ext .js,.ts --fix"
   },
   "keywords": [],
   "author": "",
@@ -35,7 +36,11 @@
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
     "eslint": "^8.57.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-no-only-tests": "^3.1.0",
     "eslint-plugin-prettier": "^5.1.3",
     "nodemon": "^3.1.0",
     "npm-run-all": "^4.1.5",
