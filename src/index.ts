@@ -1,18 +1,12 @@
 import "utils/db-env";
+import flaisleash from "server";
 
-import unleash, { IUnleashOptions, IAuthType } from "unleash-server";
-
-import azureAdminOauth from "./azure-auth-hook";
-
-const options: IUnleashOptions = {
-  authentication: {
-    type: IAuthType.CUSTOM,
-    customAuthHandler: azureAdminOauth,
-  }
-};
-
-unleash.start(options).then((instance) => {
-  console.log(
-    `Unleash started on http://localhost:${instance.app.get("port")}`,
-  );
-});
+flaisleash(true)
+  .then((server) => {
+    const port: number = server.app.get("port");
+    const logger = server.config.getLogger("flais/index.js");
+    logger.debug("Unleash server config: ", server.config);
+  })
+  .catch((error: Error) => {
+    console.error("Unleash server failed to start: ", error);
+  });

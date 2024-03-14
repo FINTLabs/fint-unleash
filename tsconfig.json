@@ -1,16 +1,18 @@
 {
-    "compilerOptions": {
-      "module": "ESNext",
-      "moduleResolution": "node",
-      "pretty": true,
-      "resolveJsonModule": true,
-      "sourceMap": false,
-      "target": "ESNext",
-      "outDir": "./dist",
-      "baseUrl": "./src",
-      "experimentalDecorators": true,
-      "strict": true
-    },
-    "include": ["src/**/*.ts", "types/**/*.d.ts"],
-    "exclude": ["node_modules", "src/**/*.spec.ts"]
-  }
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "pretty": true,
+    "resolveJsonModule": true,
+    "sourceMap": false,
+    "target": "ESNext",
+    "outDir": "./dist",
+    "baseUrl": "./src",
+    "experimentalDecorators": true,
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
+  },
+  "include": ["src/**/*.ts", "types/**/*.d.ts"],
+  "exclude": ["node_modules", "src/**/*.spec.ts"]
+}
