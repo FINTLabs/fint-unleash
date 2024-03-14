@@ -44,7 +44,7 @@ describe("Azure Auth Handler", () => {
 
   it("should throw an error if AUTH_HOST environment variable is missing", async () => {
     await expect(createAzureAuthHandler()).rejects.toThrow(
-      "Missing required environment variable: AUTH_HOST"
+      "Missing required environment variable: AUTH_HOST",
     );
   });
 
@@ -52,7 +52,7 @@ describe("Azure Auth Handler", () => {
     process.env.AUTH_HOST = "example.com";
 
     await expect(createAzureAuthHandler()).rejects.toThrow(
-      "Missing required environment variable: AUTH_CLIENT_ID"
+      "Missing required environment variable: AUTH_CLIENT_ID",
     );
   });
 
@@ -61,7 +61,7 @@ describe("Azure Auth Handler", () => {
     process.env.AUTH_CLIENT_ID = "client_id";
 
     await expect(createAzureAuthHandler()).rejects.toThrow(
-      "Missing required environment variable: AUTH_CLIENT_SECRET"
+      "Missing required environment variable: AUTH_CLIENT_SECRET",
     );
   });
 
@@ -71,7 +71,7 @@ describe("Azure Auth Handler", () => {
     process.env.AUTH_CLIENT_SECRET = "client_secret";
 
     await expect(createAzureAuthHandler()).rejects.toThrow(
-      "Missing required environment variable: AUTH_TENANT_ID"
+      "Missing required environment variable: AUTH_TENANT_ID",
     );
   });
 

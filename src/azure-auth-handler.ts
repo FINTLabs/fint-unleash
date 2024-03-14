@@ -24,7 +24,13 @@ import { Express } from "express";
 import { Strategy as OIDCStrategy, Issuer } from "openid-client";
 import passport from "passport";
 
-export default async function createAzureAuthHandler() {
+export default async function createAzureAuthHandler(): Promise<
+  (
+    app: Express,
+    config: Partial<IUnleashConfig>,
+    services?: IUnleashServices,
+  ) => void
+> {
   const host = process.env.AUTH_HOST;
   if (host === undefined) {
     throw new Error("Missing required environment variable: AUTH_HOST");
@@ -36,7 +42,9 @@ export default async function createAzureAuthHandler() {
 
   const clientSecret = process.env.AUTH_CLIENT_SECRET;
   if (clientSecret === undefined) {
-    throw new Error("Missing required environment variable: AUTH_CLIENT_SECRET");
+    throw new Error(
+      "Missing required environment variable: AUTH_CLIENT_SECRET",
+    );
   }
 
   const tenantID = process.env.AUTH_TENANT_ID;
@@ -44,55 +52,58 @@ export default async function createAzureAuthHandler() {
     throw new Error("Missing required environment variable: AUTH_TENANT_ID");
   }
 
-  const azureIssuer = await Issuer.discover(`https://login.microsoftonline.com/${tenantID}/v2.0`);
+  const azureIssuer = await Issuer.discover(
+    `https://login.microsoftonline.com/${tenantID}/v2.0`,
+  );
   const azureClient = new azureIssuer.Client({
     client_id: clientID as string,
     client_secret: clientSecret,
     redirect_uris: [`http://localhost:4242/api/auth/callback`],
-    response_types: ["code"]
+    response_types: ["code"],
   });
 
   return function azureAdminOauth(
     app: Express,
     config: Partial<IUnleashConfig>,
-    services?: IUnleashServices
+    services?: IUnleashServices,
   ) {
     const { userService } = services!;
 
     passport.use(
       "azure",
-      new OIDCStrategy<IUser>({
-        client: azureClient,
-        passReqToCallback: true,
-      }, async (message, tokenSet, userinfo, done) => {
-        const user = await userService.loginUserSSO({
-          email: userinfo.email as string,
-          name: userinfo.name as string,
-          rootRole: RoleName.ADMIN,
-          autoCreate: true,
-        });
-        done(null, user);
-      })
+      new OIDCStrategy<IUser>(
+        {
+          client: azureClient,
+          passReqToCallback: true,
+        },
+        async (message, tokenSet, userinfo, done) => {
+          const user = await userService.loginUserSSO({
+            email: userinfo.email as string,
+            name: userinfo.name as string,
+            rootRole: RoleName.ADMIN,
+            autoCreate: true,
+          });
+          done(null, user);
+        },
+      ),
     );
 
     app.use(passport.initialize());
     app.use(passport.session());
-    
-    passport.serializeUser((user, done) =>
-      done(null, user),
-    );
-    passport.deserializeUser<IUser>((user, done) =>
-      done(null, user),
-    );
+
+    passport.serializeUser((user, done) => done(null, user));
+    passport.deserializeUser<IUser>((user, done) => done(null, user));
 
     app.get(
       "/auth/azure/login",
-      passport.authenticate("azure", { scope: ['openid'] })
+      passport.authenticate("azure", { scope: ["openid"] }),
     );
     app.get(
       "/api/auth/callback",
-      passport.
-      authenticate("azure", { successRedirect: "/", failureRedirect: "/auth/azure/login" })
+      passport.authenticate("azure", {
+        successRedirect: "/",
+        failureRedirect: "/auth/azure/login",
+      }),
     );
 
     app.use("/api", (req, res, next) => {
@@ -111,5 +122,5 @@ export default async function createAzureAuthHandler() {
           .end();
       }
     });
-  }
+  };
 }

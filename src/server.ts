@@ -1,12 +1,18 @@
-import unleash, { IAuthType, IUnleash, IUnleashOptions, LogLevel } from "unleash-server";
-import { parseEnvVarBoolean, parseEnvVarNumber } from "unleash-server/dist/lib/util";
+import unleash, {
+  IAuthType,
+  IUnleash,
+  IUnleashOptions,
+  LogLevel,
+} from "unleash-server";
+import {
+  parseEnvVarBoolean,
+  parseEnvVarNumber,
+} from "unleash-server/dist/lib/util";
 import { createConfig } from "unleash-server/dist/lib/create-config";
 
 import createAzureAuthHandler from "./azure-auth-handler";
 
-export default async function flaisleash(
-  start: boolean
-): Promise<IUnleash> {
+export default async function flaisleash(start: boolean): Promise<IUnleash> {
   const azureAuthHandler = await createAzureAuthHandler();
   const unleashOptions: IUnleashOptions = {
     authentication: {
