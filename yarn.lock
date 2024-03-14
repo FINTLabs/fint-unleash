@@ -500,9 +500,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dotenvx/dotenvx@npm:^0.24.0":
-  version: 0.24.0
-  resolution: "@dotenvx/dotenvx@npm:0.24.0"
+"@dotenvx/dotenvx@npm:^0.25.0":
+  version: 0.25.0
+  resolution: "@dotenvx/dotenvx@npm:0.25.0"
   dependencies:
     "@inquirer/prompts": "npm:^3.3.0"
     chalk: "npm:^4.1.2"
@@ -525,7 +525,7 @@ __metadata:
   bin:
     dotenvx: src/cli/dotenvx.js
     git-dotenvx: src/cli/dotenvx.js
-  checksum: 10c0/64abb9ce82ac7721dad71fa3b78d43eb910c7bc876f4299360949050e0fe089570c33adc387329eb6b2e4345e9797190f08527d6488846d78ef42425133d609f
+  checksum: 10c0/e94a05778d9ef4eee5e76e487476a631e789a22b360674bb412d47de93f6d91ba172cd1eb9b1460729722c0f5289ac340b360d17c9af7d9a4103dc0b08ca4386
   languageName: node
   linkType: hard
 
@@ -1736,12 +1736,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:>=12.0.0, @types/node@npm:^20.11.26":
+"@types/node@npm:>=12.0.0":
   version: 20.11.26
   resolution: "@types/node@npm:20.11.26"
   dependencies:
     undici-types: "npm:~5.26.4"
   checksum: 10c0/2df81e4f109588c4c490f2c7d616a06d2b3b9298f217468134b80711af810c9a6017a59beb3e6b1c596eb9b6c5a39d33403b99179acb89006badfbc55f2468bb
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^20.11.27":
+  version: 20.11.27
+  resolution: "@types/node@npm:20.11.27"
+  dependencies:
+    undici-types: "npm:~5.26.4"
+  checksum: 10c0/ec40bea80c60a12b39bd0da9b16333237a84c67ae83c8aa382b88381ae3948943bf6af969442e209270ad3e109f301a6b01ab243f80bd0e69673a877425f9418
   languageName: node
   linkType: hard
 
@@ -4930,12 +4939,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "fint-unleash@workspace:."
   dependencies:
-    "@dotenvx/dotenvx": "npm:^0.24.0"
+    "@dotenvx/dotenvx": "npm:^0.25.0"
     "@passport-next/passport": "npm:3.1.0"
     "@passport-next/passport-google-oauth2": "npm:1.0.0"
     "@types/express": "npm:^4.17.21"
     "@types/jest": "npm:^29.5.12"
-    "@types/node": "npm:^20.11.26"
+    "@types/node": "npm:^20.11.27"
     "@types/passport-azure-ad": "npm:^4.3.6"
     "@types/supertest": "npm:^6"
     "@typescript-eslint/eslint-plugin": "npm:^7.2.0"
