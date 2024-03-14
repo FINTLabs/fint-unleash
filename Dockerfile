@@ -1,24 +1,43 @@
-# Stage 1: Build TypeScript code
-FROM node:latest AS build
+# Build Stage
+FROM node:20-alpine AS builder
 
-WORKDIR /app
 
-COPY package.json yarn.lock .yarnrc.yml ./
-RUN yarn install
+RUN mkdir -p /unleash && \
+    chown -R node:node /unleash && \
+    yarn config set loglevel "error"
 
-COPY . .
+WORKDIR /unleash
+
+ADD package.json .
+ADD yarn.lock .
+ADD .yarnrc.yml .
+
+RUN yarn policies set-version stable
+RUN yarn install --immutable
+
+ADD . .
+
+RUN yarn policies set-version stable
 RUN yarn build
 
+RUN rm -rf node_modules
+RUN yarn cache clean
+
+# RUN yarn set version stable
+
+RUN yarn workspaces focus --production
+
 # Stage 2: Run the built code
-FROM node:latest
+# Production Stage
+FROM gcr.io/distroless/nodejs20-debian11
+
+LABEL org.opencontainers.image.source=https://github.com/FINTLabs/fint-unleash
+LABEL org.opencontainers.image.description="Unleash for FLAIS"
+LABEL org.opencontainers.image.licenses=MIT
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
-RUN yarn install --production
+COPY --from=builder /unleash/dist ./dist
+COPY --from=builder /unleash/node_modules ./node_modules
 
-COPY --from=build /app/dist ./dist
-
-EXPOSE 4242
-
-CMD node dist/index.js
+CMD ["dist/index.js"]
