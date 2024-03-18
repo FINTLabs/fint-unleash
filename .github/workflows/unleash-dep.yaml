@@ -1,7 +1,7 @@
 name: "Unleash Deployment"
 on:
   workflow_run:
-    workflows: ["unleash-test.yaml"]
+    workflows: [Unleash Test]
     types:
       - completed
   workflow_dispatch:
