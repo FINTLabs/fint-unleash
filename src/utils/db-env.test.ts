@@ -1,9 +1,21 @@
 describe("db-env", () => {
   const OLD_ENV = process.env;
+  
+  function resetEnvironmentVariables() {
+    delete process.env["fint.database.url"];
+    delete process.env["fint.database.username"];
+    delete process.env["fint.database.password"];
+    delete process.env.DATABASE_PORT;
+    delete process.env.DATABASE_HOST;
+    delete process.env.DATABASE_USERNAME;
+    delete process.env.DATABASE_PASSWORD;
+    delete process.env.DATABASE_NAME;
+    delete process.env.DATABASE_SCHEMA;
+  }
 
   beforeEach(() => {
     jest.resetModules();
-    process.env = { ...OLD_ENV };
+    resetEnvironmentVariables();
   });
 
   afterAll(() => {
