@@ -12,12 +12,14 @@ ADD package.json .
 ADD yarn.lock .
 ADD .yarnrc.yml .
 
-RUN yarn policies set-version stable
+RUN corepack enable
+
+# RUN yarn policies set-version stable
 RUN yarn install --immutable
 
 ADD . .
 
-RUN yarn policies set-version stable
+# RUN yarn policies set-version stable
 RUN yarn build
 
 RUN rm -rf node_modules
