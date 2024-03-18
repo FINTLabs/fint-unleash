@@ -1,0 +1,176 @@
+name: "Unleash Deployment"
+on:
+  workflow_run:
+    workflows: ["unleash-test.yaml"]
+    types:
+      - completed
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-dep
+  cancel-in-progress: false
+
+env:
+  REGISTRY: ghcr.io
+  TEAM: flais
+  IMAGE_NAME: ${{ github.repository }}
+
+  NAMESPACE: flais-io
+
+  API_CLUSTER_NAME: ${{vars.API_CLUSTER_NAME}}
+  API_CLUSTER_RESOURCE_GROUP: ${{vars.API_CLUSTER_RESOURCE_GROUP}}
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.TEAM }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha,enable=true,priority=100,prefix=sha-,suffix=,format=short
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
+
+
+
+  ## Alpha cluster ##
+  deploy-alpha:
+    runs-on: ubuntu-latest
+    needs: build-and-push-image
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - name: Bake beta manifests with Kustomize
+        id: bake-alpha
+        uses: azure/k8s-bake@v2
+        with:
+          renderEngine: 'kustomize'
+          kustomizationPath: 'kustomize/overlays/beta'
+
+      - uses: azure/login@v1
+        with:
+          creds: '${{ secrets.AKS_ALPHA_FINT_GITHUB }}'
+
+      - uses: azure/use-kubelogin@v1
+        with:
+          kubelogin-version: 'v0.0.26'
+
+      - name: Set the target Alpha cluster.
+        uses: azure/aks-set-context@v3
+        with:
+          cluster-name: ${{ var.ALPHA_CLUSTER_NAME }}
+          resource-group: ${{ var.ALPHA_CLUSTER_RESOURCE_GROUP }}
+          admin: 'true'
+          use-kubelogin: 'true'
+
+      - name: Deploy to Alpha
+        uses: azure/k8s-deploy@v4.9
+        with:
+          manifests: ${{ steps.bake-alpha.outputs.manifestsBundle }}
+          images: |
+            ${{ needs.build-and-push-image.outputs.tags }}
+          namespace: ${{ env.NAMESPACE }}
+          action: deploy
+
+     ## Beta cluster ##
+  deploy-beta:
+    runs-on: ubuntu-latest
+    needs: build-and-push-image
+    environment: Beta
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+     - name: Bake beta manifests with Kustomize
+       uses: azure/k8s-bake@v2
+       with:
+         renderEngine: 'kustomize'
+         kustomizationPath: 'kustomize/overlays/beta'
+       id: bake-beta
+
+     - uses: azure/login@v1
+       with:
+         creds: '${{ secrets.AKS_BETA_FINT_GITHUB }}'
+
+     - uses: azure/use-kubelogin@v1.1
+       with:
+         kubelogin-version: 'v0.0.26'
+
+     - name: Set the target Beta cluster.
+       uses: azure/aks-set-context@v3
+       with:
+         cluster-name: ${{ var.BETA_CLUSTER_NAME }}
+         resource-group: ${{ var.BETA_CLUSTER_RESOURCE_GROUP }}
+         admin: 'true'
+         use-kubelogin: 'true'
+
+     - name: Deploy to Beta
+       uses: azure/k8s-deploy@v4.9
+       with:
+         manifests: ${{ steps.bake-beta.outputs.manifestsBundle }}
+         images: |
+           ${{ steps.meta.outputs.tags }}
+         namespace: ${{ env.NAMESPACE }}
+         action: deploy
+#
+#      ## Api cluster ##
+#      - name: Bake api manifests with Kustomize
+#        uses: azure/k8s-bake@v2
+#        with:
+#           renderEngine: 'kustomize'
+#           kustomizationPath: 'kustomize/overlays/api'
+#        id: bake-api
+#
+#      - uses: azure/login@v1
+#        with:
+#          creds: '${{ secrets.AKS_API_FINT_GITHUB }}'
+#
+#      - uses: azure/use-kubelogin@v1.1
+#        with:
+#          kubelogin-version: 'v0.0.26'
+#
+#      - name: Set the target Api cluster.
+#        uses: azure/aks-set-context@v3
+#        with:
+#          cluster-name: ${{ env.API_CLUSTER_NAME }}
+#          resource-group: ${{ env.API_CLUSTER_RESOURCE_GROUP }}
+#          admin: 'true'
+#          use-kubelogin: 'true'
+#
+#      - name: Deploy to API
+#        uses: azure/k8s-deploy@v4.9
+#        with:
+#          manifests: ${{ steps.bake-API.outputs.manifestsBundle }}
+#          images: |
+#            ${{ steps.meta.outputs.tags }}
+#          namespace: ${{ env.NAMESPACE }}
+#          action: deploy
