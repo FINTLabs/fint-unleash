@@ -86,8 +86,8 @@ jobs:
       - name: Set the target Alpha cluster.
         uses: azure/aks-set-context@v3
         with:
-          cluster-name: ${{ var.ALPHA_CLUSTER_NAME }}
-          resource-group: ${{ var.ALPHA_CLUSTER_RESOURCE_GROUP }}
+          cluster-name: ${{ vars.ALPHA_CLUSTER_NAME }}
+          resource-group: ${{ vars.ALPHA_CLUSTER_RESOURCE_GROUP }}
           admin: 'true'
           use-kubelogin: 'true'
 
@@ -128,8 +128,8 @@ jobs:
      - name: Set the target Beta cluster.
        uses: azure/aks-set-context@v3
        with:
-         cluster-name: ${{ var.BETA_CLUSTER_NAME }}
-         resource-group: ${{ var.BETA_CLUSTER_RESOURCE_GROUP }}
+         cluster-name: ${{ vars.BETA_CLUSTER_NAME }}
+         resource-group: ${{ vars.BETA_CLUSTER_RESOURCE_GROUP }}
          admin: 'true'
          use-kubelogin: 'true'
 
