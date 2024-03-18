@@ -1,5 +1,5 @@
-import "utils/db-env";
-import flaisleash from "server";
+import "./utils/db-env";
+import flaisleash from "./server";
 
 flaisleash(true)
   .then((server) => {
