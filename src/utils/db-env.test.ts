@@ -1,6 +1,6 @@
 describe("db-env", () => {
   const OLD_ENV = process.env;
-  
+
   function resetEnvironmentVariables() {
     delete process.env["fint.database.url"];
     delete process.env["fint.database.username"];
