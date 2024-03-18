@@ -69,8 +69,8 @@ jobs:
       packages: write
     
     steps:
-      - name: Install kubectl
-        uses: azure/setup-kubectl@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Bake beta manifests with Kustomize
         id: bake-alpha
