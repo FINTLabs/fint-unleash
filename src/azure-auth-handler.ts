@@ -58,7 +58,7 @@ export default async function createAzureAuthHandler(): Promise<
   const azureClient = new azureIssuer.Client({
     client_id: clientID as string,
     client_secret: clientSecret,
-    redirect_uris: [`http://localhost:4242/api/auth/callback`],
+    redirect_uris: [`${host}/api/auth/callback`],
     response_types: ["code"],
   });
 
