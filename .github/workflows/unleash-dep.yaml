@@ -1,5 +1,8 @@
 name: "Unleash Deployment"
 on:
+  push:
+    branches: 
+      - 'main'
   workflow_run:
     workflows: ["unleash-test.yaml"]
     types:
@@ -57,8 +60,6 @@ jobs:
     outputs:
       tags: ${{ steps.meta.outputs.tags }}
 
-
-
   ## Alpha cluster ##
   deploy-alpha:
     runs-on: ubuntu-latest
@@ -68,12 +69,23 @@ jobs:
       packages: write
     
     steps:
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+
       - name: Bake beta manifests with Kustomize
         id: bake-alpha
         uses: azure/k8s-bake@v2
         with:
           renderEngine: 'kustomize'
-          kustomizationPath: './kustomize/overlays/alpha'
+          kustomizationPath: 'kustomize/overlays/alpha'
+
+      - name: Set the target Alpha cluster. 
+        uses: azure/aks-set-context@v3
+        with:
+          cluster-name: ${{ vars.ALPHA_CLUSTER_NAME }}
+          resource-group: ${{ vars.ALPHA_CLUSTER_RESOURCE_GROUP }}
+          admin: 'true'
+          use-kubelogin: 'true'
 
       - uses: azure/login@v1
         with:
@@ -82,14 +94,6 @@ jobs:
       - uses: azure/use-kubelogin@v1
         with:
           kubelogin-version: 'v0.0.26'
-
-      - name: Set the target Alpha cluster.
-        uses: azure/aks-set-context@v3
-        with:
-          cluster-name: ${{ vars.ALPHA_CLUSTER_NAME }}
-          resource-group: ${{ vars.ALPHA_CLUSTER_RESOURCE_GROUP }}
-          admin: 'true'
-          use-kubelogin: 'true'
 
       - name: Deploy to Alpha
         uses: azure/k8s-deploy@v4.9
