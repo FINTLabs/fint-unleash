@@ -500,9 +500,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dotenvx/dotenvx@npm:^0.24.0":
-  version: 0.24.0
-  resolution: "@dotenvx/dotenvx@npm:0.24.0"
+"@dotenvx/dotenvx@npm:^0.26.0":
+  version: 0.26.0
+  resolution: "@dotenvx/dotenvx@npm:0.26.0"
   dependencies:
     "@inquirer/prompts": "npm:^3.3.0"
     chalk: "npm:^4.1.2"
@@ -525,7 +525,7 @@ __metadata:
   bin:
     dotenvx: src/cli/dotenvx.js
     git-dotenvx: src/cli/dotenvx.js
-  checksum: 10c0/64abb9ce82ac7721dad71fa3b78d43eb910c7bc876f4299360949050e0fe089570c33adc387329eb6b2e4345e9797190f08527d6488846d78ef42425133d609f
+  checksum: 10c0/5c4ef3750936d632dd2708704960a749dc28359c5b976df288ac02f192a8a97eeedb08b9f1dd34f72d3022b97deaacc0893cf7e9281c25a96ddb57d75e79e51f
   languageName: node
   linkType: hard
 
@@ -4939,7 +4939,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "fint-unleash@workspace:."
   dependencies:
-    "@dotenvx/dotenvx": "npm:^0.24.0"
+    "@dotenvx/dotenvx": "npm:^0.26.0"
     "@passport-next/passport": "npm:3.1.0"
     "@passport-next/passport-google-oauth2": "npm:1.0.0"
     "@types/express": "npm:^4.17.21"
